@@ -84,6 +84,7 @@ public class ActorDAO {
                 objeto.setSobrenome(rs.getString("last_name"));
                 objeto.setAtualizacao(rs.getDate("last_update"));
                 // Inclui na lista
+                
                 list.add(objeto);
             }
             rs.close();

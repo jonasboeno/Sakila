@@ -1,7 +1,6 @@
 package forms;
 
 import dao.ActorDAO;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -173,9 +172,10 @@ public class ActorForm extends javax.swing.JFrame {
         // Busca lista de objetos
         try {
         for (Actor actor : actorDAO.findAll()){
-            String linha[] = {""+actor.getActor_id(), actor.getNome(), actor.getSobrenome(),""+actor.getAtualizacao()};
-            
-            
+            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            String atualiza = format.format(actor.getAtualizacao());
+            String linha[] = {""+actor.getActor_id(), actor.getNome(), actor.getSobrenome(),atualiza};
+
             model.addRow(linha);
         }
         } catch (Exception ex) {
