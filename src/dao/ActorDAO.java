@@ -18,30 +18,36 @@ public class ActorDAO {
         connection = ConnectionJDBC.getConnection();
     }
 
+    //////////////////SAVE//////////////////////////////////////////////////////
     public void save(Actor actor) throws Exception {
         String SQL = "INSERT INTO ACTOR VALUES (?, ?)";
         try {
             PreparedStatement p = connection.prepareStatement(SQL);
             p.setInt(1, actor.getActor_id());
             p.setString(2, actor.getNome());
+            p.setString(3, actor.getSobrenome());
+            p.setDate(4, actor.getAtualizacao());
             p.execute();
         } catch (SQLException ex) {
             throw new Exception(ex);
         }
     }
-
+    /////////////////UPDATE/////////////////////////////////////////////////////
     public void update(Actor actor) throws Exception {
         String SQL = "UPDATE ACTOR SET FIRST_NAME=? WHERE ACTOR_ID=?";
         try {
             PreparedStatement p = connection.prepareStatement(SQL);
-            p.setString(1, actor.getNome());
-            p.setInt(2, actor.getActor_id());
+            p.setInt(1, actor.getActor_id());
+            p.setString(2, actor.getNome());
+            p.setString(3, actor.getSobrenome());
+            p.setDate(4, actor.getAtualizacao());
             p.execute();
         } catch (SQLException ex) {
             throw new Exception(ex);
         }
     }
 
+    ///////////////////DELETE///////////////////////////////////////////////////
     public void delete(Actor actor) throws Exception {
         String SQL = "DELETE FROM ACTOR WHERE ACTOR_ID=?";
         try {
@@ -52,11 +58,13 @@ public class ActorDAO {
             throw new Exception(ex);
         }
     }
-
+    
+    ////////////////BUSCAR POR ID//////////////////////////////////////////////
     public Actor findById(int id) {
         return new Actor();
     }
-
+    
+    ///////////////LISTA DE ATORES//////////////////////////////////////////////
      public java.util.List<Actor> findAll() throws Exception {
         // Lista para manter os valores do ResultSet
         java.util.List<Actor> list = new ArrayList<>();
@@ -74,7 +82,7 @@ public class ActorDAO {
                 objeto.setActor_id(rs.getInt("actor_id"));
                 objeto.setNome(rs.getString("first_name"));
                 objeto.setSobrenome(rs.getString("last_name"));
-                objeto.setAtualizacao(rs.getString("last_update"));
+                objeto.setAtualizacao(rs.getDate("last_update"));
                 // Inclui na lista
                 list.add(objeto);
             }

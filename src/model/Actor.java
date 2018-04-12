@@ -6,13 +6,13 @@ public class Actor {
     private int actor_id;
     private String nome;
     private String sobrenome;
-    private String atualizacao;
+    private Date atualizacao;
         
-    public String getAtualizacao() {
+    public Date getAtualizacao() {
         return atualizacao;
     }
 
-    public void setAtualizacao(String ultimaatualizacao) {
+    public void setAtualizacao(Date ultimaatualizacao) {
         this.atualizacao = ultimaatualizacao;
     }
     

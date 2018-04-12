@@ -80,13 +80,33 @@ public class ActorForm extends javax.swing.JFrame {
                 "ID", "Nome", "Sobrenome", "Última atualização"
             }
         ));
+        tabela.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelaMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tabela);
 
         btNovo.setText("Novo");
+        btNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btNovoActionPerformed(evt);
+            }
+        });
 
         btSalvar.setText("Salvar");
+        btSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btSalvarActionPerformed(evt);
+            }
+        });
 
         btRemover.setText("Remover");
+        btRemover.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btRemoverActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -144,9 +164,8 @@ public class ActorForm extends javax.swing.JFrame {
     private void txtNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNomeActionPerformed
-//////////////////////////////////////////////////////////////////////////////////////
+
 ////////////////////////LISTAR ATORES/////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////
     public void listar() {
         DefaultTableModel model = (DefaultTableModel) tabela.getModel();
         //Limpa JTable
@@ -154,7 +173,7 @@ public class ActorForm extends javax.swing.JFrame {
         // Busca lista de objetos
         try {
         for (Actor actor : actorDAO.findAll()){
-            String linha[] = {""+actor.getActor_id(), actor.getNome(), actor.getSobrenome(),actor.getAtualizacao()};
+            String linha[] = {""+actor.getActor_id(), actor.getNome(), actor.getSobrenome(),""+actor.getAtualizacao()};
             
             
             model.addRow(linha);
@@ -163,12 +182,65 @@ public class ActorForm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }
     }
-//////////////////////////////////////////////////////////////////////////////////////
-//////////////////////ACÃO AO ABRIR JANELA////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////    
+//////////////////////ACÃO AO ABRIR JANELA////////////////////////////////////////////   
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         listar();
     }//GEN-LAST:event_formWindowOpened
+
+/////////////////////BOTAO SALVAR///////////////////////////////////////////////
+    private void btSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSalvarActionPerformed
+        Actor actor = new Actor();
+        actor.setActor_id(Integer.parseInt(txtAtorId.getText()));
+        actor.setNome(txtNome.getText());
+        
+        try {
+            if (mode.equals("INS")) {
+                actorDAO.save(actor);
+                txtAtorId.requestFocus();
+                JOptionPane.showMessageDialog(null,"Salvo com sucesso!");
+            } else if (mode.equals("UPD")){
+                actorDAO.update(actor);
+                txtAtorId.requestFocus();
+                JOptionPane.showMessageDialog(null,"Alterado com sucesso!");
+            }
+        } catch (Exception ex) {
+           JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
+        listar();
+    }//GEN-LAST:event_btSalvarActionPerformed
+/////////////////////BOTAO NOVO CADASTRO/////////////////////////////////////////
+    private void btNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNovoActionPerformed
+        txtAtorId.setText("");
+        txtNome.setText("");
+        txtSobrenome.setText("");
+        this.mode = "INS";
+    }//GEN-LAST:event_btNovoActionPerformed
+////////////////////BOTAO DELETAR///////////////////////////////////////////////
+    private void btRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRemoverActionPerformed
+        int opt = JOptionPane.showConfirmDialog(this, "Excluir registro?");
+        
+        if (opt == JOptionPane.YES_OPTION) {
+            Actor actor = new Actor();
+            actor.setActor_id(Integer.parseInt(txtAtorId.getText()));
+            
+            try{
+                actorDAO.delete(actor);
+                JOptionPane.showMessageDialog(this, "Registro Excluido!");
+            }catch(Exception ex){
+                JOptionPane.showMessageDialog(this, ex.getMessage());
+            }
+            
+            listar();
+        }
+    }//GEN-LAST:event_btRemoverActionPerformed
+///////////////////SET REGISTRO DA TABELA COM CLICKMOUSE////////////////////////
+    private void tabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMouseClicked
+        int selected = tabela.getSelectedRow();
+        txtAtorId.setText(tabela.getValueAt(selected,0).toString());
+        txtNome.setText(tabela.getValueAt(selected,1).toString());
+        txtSobrenome.setText(tabela.getValueAt(selected,2).toString());
+        this.mode="UPD";
+    }//GEN-LAST:event_tabelaMouseClicked
 
     /**
      * @param args the command line arguments
