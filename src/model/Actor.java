@@ -1,19 +1,19 @@
 package model;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 public class Actor {
     private int actor_id;
     private String nome;
     private String sobrenome;
-    private Date atualizacao;
+    private Timestamp atualizacao;
         
-    public Date getAtualizacao() {
+    public Timestamp getAtualizacao() {
         return atualizacao;
     }
 
-    public void setAtualizacao(Date ultimaatualizacao) {
-        this.atualizacao = ultimaatualizacao;
+    public void setAtualizacao(Timestamp atualizacao) {
+        this.atualizacao = atualizacao;
     }
     
     public int getActor_id() {

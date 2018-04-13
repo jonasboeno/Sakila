@@ -2,9 +2,11 @@ package dao;
 
 import java.awt.List;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import model.Actor;
 import util.ConnectionJDBC;
@@ -20,13 +22,13 @@ public class ActorDAO {
 
     //////////////////SAVE//////////////////////////////////////////////////////
     public void save(Actor actor) throws Exception {
-        String SQL = "INSERT INTO ACTOR VALUES (?, ?)";
+        String SQL = "INSERT INTO ACTOR VALUES (?, ?, ?, ?)";
         try {
             PreparedStatement p = connection.prepareStatement(SQL);
             p.setInt(1, actor.getActor_id());
             p.setString(2, actor.getNome());
             p.setString(3, actor.getSobrenome());
-            p.setDate(4, actor.getAtualizacao());
+            p.setTimestamp (4, actor.getAtualizacao());
             p.execute();
         } catch (SQLException ex) {
             throw new Exception(ex);
@@ -34,13 +36,13 @@ public class ActorDAO {
     }
     /////////////////UPDATE/////////////////////////////////////////////////////
     public void update(Actor actor) throws Exception {
-        String SQL = "UPDATE ACTOR SET FIRST_NAME=? WHERE ACTOR_ID=?";
+        String SQL = "UPDATE ACTOR SET FIRST_NAME=?,LAST_NAME=?,LAST_UPDATE=? WHERE ACTOR_ID=?";
         try {
             PreparedStatement p = connection.prepareStatement(SQL);
-            p.setInt(1, actor.getActor_id());
-            p.setString(2, actor.getNome());
-            p.setString(3, actor.getSobrenome());
-            p.setDate(4, actor.getAtualizacao());
+            p.setString(1, actor.getNome());
+            p.setString(2, actor.getSobrenome());
+            p.setTimestamp(3, actor.getAtualizacao());
+            p.setInt(4, actor.getActor_id());
             p.execute();
         } catch (SQLException ex) {
             throw new Exception(ex);
@@ -82,7 +84,7 @@ public class ActorDAO {
                 objeto.setActor_id(rs.getInt("actor_id"));
                 objeto.setNome(rs.getString("first_name"));
                 objeto.setSobrenome(rs.getString("last_name"));
-                objeto.setAtualizacao(rs.getDate("last_update"));
+                objeto.setAtualizacao(rs.getTimestamp("last_update"));
                 // Inclui na lista
                 
                 list.add(objeto);

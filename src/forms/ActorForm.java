@@ -1,6 +1,8 @@
 package forms;
 
 import dao.ActorDAO;
+import java.util.Date;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -186,12 +188,14 @@ public class ActorForm extends javax.swing.JFrame {
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         listar();
     }//GEN-LAST:event_formWindowOpened
-
 /////////////////////BOTAO SALVAR///////////////////////////////////////////////
     private void btSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSalvarActionPerformed
         Actor actor = new Actor();
         actor.setActor_id(Integer.parseInt(txtAtorId.getText()));
         actor.setNome(txtNome.getText());
+        actor.setSobrenome(txtSobrenome.getText());
+        Date agora = new Date();
+        actor.setAtualizacao(new Timestamp(agora.getTime()));
         
         try {
             if (mode.equals("INS")) {
